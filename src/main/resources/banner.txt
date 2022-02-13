@@ -1,0 +1,8 @@
+${AnsiStyle.NORMAL}${AnsiColor.BRIGHT_WHITE}    ______           _ _     _    ${AnsiStyle.NORMAL}${AnsiColor.GREEN}_________${AnsiColor.BLUE}____
+${AnsiStyle.NORMAL}${AnsiColor.BRIGHT_WHITE}   |  ____|         | (_)   | |   ${AnsiStyle.NORMAL}${AnsiColor.GREEN}|________${AnsiColor.BLUE}|  |
+${AnsiStyle.NORMAL}${AnsiColor.BRIGHT_WHITE}   | |__  _   _  ___| |_  __| |   ${AnsiStyle.NORMAL}${AnsiColor.BLUE}|  |     ${AnsiColor.BLUE}|  |
+${AnsiStyle.NORMAL}${AnsiColor.BRIGHT_WHITE}   |  __|| | | |/ __| | |/ _` |   ${AnsiStyle.NORMAL}${AnsiColor.BLUE}|  |     ${AnsiColor.BLUE}|  |
+${AnsiStyle.NORMAL}${AnsiColor.BRIGHT_WHITE}   | |___| |_| | (__| | | (_| |   ${AnsiStyle.NORMAL}${AnsiColor.BLUE}|__|${AnsiColor.YELLOW}_____${AnsiColor.BLUE}|  |
+${AnsiStyle.NORMAL}${AnsiColor.CYAN}===${AnsiColor.BRIGHT_WHITE}|______\__,_|\___|_|_|\__,_|${AnsiColor.CYAN}===${AnsiStyle.NORMAL}${AnsiColor.YELLOW}|________${AnsiColor.BLUE}|__|${AnsiColor.CYAN}===
+${AnsiStyle.NORMAL}${AnsiColor.GREEN}[${AnsiStyle.BOLD}     Euclid LMS     ${AnsiStyle.NORMAL}${AnsiColor.GREEN}]   ${AnsiColor.BRIGHT_MAGENTA}(${AnsiStyle.BOLD}${AnsiStyle.ITALIC}v ${application.version}${AnsiStyle.NORMAL}${AnsiColor.BRIGHT_MAGENTA})
+${AnsiStyle.NORMAL}${AnsiColor.GREEN}[${AnsiStyle.BOLD}  Spring Framework  ${AnsiStyle.NORMAL}${AnsiColor.GREEN}]   ${AnsiColor.BRIGHT_MAGENTA}(${AnsiStyle.BOLD}${AnsiStyle.ITALIC}v ${spring-boot.version}${AnsiStyle.NORMAL}${AnsiColor.BRIGHT_MAGENTA})${AnsiStyle.NORMAL}
