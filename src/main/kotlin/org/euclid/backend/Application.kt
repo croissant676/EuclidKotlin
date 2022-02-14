@@ -1,5 +1,6 @@
 package org.euclid.backend
 
+import com.nimbusds.oauth2.sdk.util.date.SimpleDate
 import java.security.SecureRandom
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -19,17 +20,21 @@ class EuclidKotlinApplication
 
 @Configuration
 class MongoConfiguration: AbstractMongoClientConfiguration() {
-    override fun getDatabaseName(): String = "euclid"
+    override fun getDatabaseName(): String = "euclid_kt"
+
     @Bean
     fun passwordEncoder(): PasswordEncoder = Argon2PasswordEncoder()
+
     @Bean
-    fun runner(userRepository: UserRepository) =  ApplicationRunner {
-        userRepository.save(User(
-            displayName = "Bob",
-            username = "Bob",
-            password = "password",
-            email = "bob@email.com"
-        ))
+    fun runner(userController: UserController) = ApplicationRunner {
+        userController.createUser(
+            CreateUserObject(
+                "Bob",
+                "password",
+                "bob@email.com",
+                SimpleDate(2000, 1, 1)
+            ).log()!!
+        )
     }
 }
 
@@ -67,7 +72,7 @@ private val mutableMap: MutableMap<Class<*>, Logger> = hashMapOf()
 
 fun log(modelClass: KClass<*>): Logger {
     val clazz = modelClass.java
-    if(clazz in mutableMap.keys) return mutableMap[clazz]!!
+    if (clazz in mutableMap.keys) return mutableMap[clazz]!!
     val logger = LoggerFactory.getLogger(clazz)
     mutableMap[clazz] = logger
     return logger
@@ -76,3 +81,10 @@ fun log(modelClass: KClass<*>): Logger {
 operator fun Logger.invoke(string: String) = info(string)
 operator fun Logger.invoke(string: String, vararg args: Any?) = info(string, *args)
 operator fun Logger.invoke(string: String, throwable: Throwable) = error(string, throwable)
+val appLogger: Logger = LoggerFactory.getLogger(EuclidKotlinApplication::class.java)
+
+fun <T> T?.log(): T? {
+    if (this == null) appLogger("Specified object is null.")
+    else appLogger("Logging value $this")
+    return this
+}
