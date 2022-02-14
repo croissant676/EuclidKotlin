@@ -1,5 +1,3 @@
 package org.euclid.backend
 
-class PageContent {
-
-}
+class TextContent(val path: String)

@@ -60,6 +60,10 @@ fun id(string: String): SimpleID? {
     }
 }
 
+class NotFoundException(clazz: KClass<*>, string: String = "Details unknown.") : RuntimeException(
+    "Could not find instance of ${clazz.qualifiedName}: $string"
+)
+
 data class SimpleID(private val bytes: ByteArray) {
     override fun equals(other: Any?) = other != null && other is SimpleID && bytes.contentEquals(other.bytes)
     override fun toString() = Base64Utils.encodeToString(bytes)

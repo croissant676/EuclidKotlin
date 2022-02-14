@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RestController
 
-val log = log(User::class)
+val userLogger = log(User::class)
 
 data class User(
     val id: SimpleID = id(),
@@ -38,7 +38,7 @@ data class User(
     var password: String,
     var email: String,
     @DocumentReference
-    val courses: Set<Course> = HashSet(),
+    val courses: MutableSet<Course> = HashSet(),
     val birthday: SimpleDate,
     var locked: Boolean = false,
     var credentialsExpired: Boolean = false,
@@ -111,13 +111,13 @@ class UserService(val userRepository: UserRepository, val passwordEncoder: Passw
 
     override fun loadUserByUsername(username: String): UserDetails {
         val optional = userRepository.findFirstByUsername(username)
-        log("Euclid Test >> Loading $username")
+        userLogger("Euclid Test >> Loading $username")
         return WrapperUserDetails(optional.orElseThrow { UsernameNotFoundException("Could not find username: $username") })
     }
 
     override fun updatePassword(details: UserDetails, newPassword: String): UserDetails {
         if (details !is WrapperUserDetails) return details
-        log("Euclid Test >> Loading $details to change password to $newPassword")
+        userLogger("Euclid Test >> Loading $details to change password to $newPassword")
         details.user.password = passwordEncoder.encode(newPassword)
         return details
     }
@@ -152,12 +152,12 @@ class UserController(val userRepository: UserRepository, val passwordEncoder: Pa
     @GetMapping("/internal/user/{id}")
     fun singleUser(@PathVariable id: String): EntityModel<User>? {
         val simpleID = id(id) ?: kotlin.run {
-            log.warn("Could not decode id: $id, discarding request")
+            userLogger.warn("Could not decode id: $id, discarding request")
             return null
         }
         return EntityModel.of(
             userRepository.findById(simpleID)
-                .orElseThrow { IllegalArgumentException("Could not find user with id: $id") },
+                .orElseThrow { NotFoundException(User::class, "With id $id") },
             linkTo<UserController> { allUsers() }.withRel("all"),
             linkTo<UserController> { singleUser(simpleID.toString()) }.withSelfRel()
         )
@@ -185,7 +185,7 @@ class UserController(val userRepository: UserRepository, val passwordEncoder: Pa
     fun updateUser(user: User): ResponseEntity<*> {
         val id = user.id
         val previousUser = userRepository.findById(id).orElseThrow {
-            RuntimeException("Could not find user with given id: $id")
+            NotFoundException(User::class, "With id $id")
         }
         if (previousUser.locked ||
             previousUser.credentialsExpired ||
